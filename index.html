@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>DivineOS // Injector_Mode_v8.5</title>
+<title>DivineOS // Injector_Mode_v8.5_SECURE</title>
 <link rel="manifest" href="manifest.json">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 
@@ -1068,20 +1068,18 @@ if(win) {
                         // --- 2. DECRYPTION LOGIC ---
                         const bytes = CryptoJS.AES.decrypt(saved, BIO.masterKey);
                         const str = bytes.toString(CryptoJS.enc.Utf8);
+                        
+                        // CRITICAL FIX: IF DECRYPT FAILS, THROW ERROR. DO NOT LOAD DEFAULT.
                         if(!str) throw "WRONG_KEY";
                         
                         BIO.fs = JSON.parse(str);
                         BIO.log("FS: Decrypted & Mounted.");
                     } catch(e) {
                         // IF WRONG PASSWORD, THIS CRASHES HERE
-                        if(e === "WRONG_KEY") {
-                            BIO.masterKey = null;
-                            alert("WRONG PASSWORD. REBOOTING.");
-                            location.reload();
-                            return;
-                        }
-                        BIO.fs = JSON.parse(JSON.stringify(BIO.defaultFS));
-                        BIO.log("FS: Corrupt. Reformatting.");
+                        BIO.masterKey = null;
+                        alert("ACCESS DENIED: WRONG PASSWORD");
+                        location.reload();
+                        return;
                     }
                 } else {
                     BIO.fs = JSON.parse(JSON.stringify(BIO.defaultFS));
