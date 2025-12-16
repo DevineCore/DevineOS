@@ -1,10 +1,10 @@
 {
-  "name": "Divine OS",
+  "name": "Divine OS v8.5",
   "short_name": "Divine",
-  "start_url": "./index.html",
+  "start_url": "./index.html?mode=standalone",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#000000",
+  "background_color": "#0000AA",
+  "theme_color": "#0000AA",
   "icons": [
     {
       "src": "icon.png",
