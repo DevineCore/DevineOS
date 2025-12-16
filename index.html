@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>DivineOS // Secure_Installer</title>
+<title>DivineOS // Injector_Mode_v8.5</title>
 <link rel="manifest" href="manifest.json">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 
@@ -23,26 +23,6 @@
         background-color: #000; color: var(--text); cursor: crosshair; font-weight: bold;
         transition: background 0.3s;
     }
-
-    /* INSTALLER SCREEN (New) */
-    #installer-screen {
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        background: #050505; color: #00ff41; z-index: 2000000;
-        display: none; /* Hidden by default */
-        flex-direction: column; justify-content: center; align-items: center;
-        text-align: center; padding: 20px;
-    }
-    .install-box {
-        border: 2px solid #00ff41; padding: 30px; max-width: 500px;
-        background: rgba(0, 20, 0, 0.9);
-        box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
-    }
-    .install-btn {
-        background: #00ff41; color: black; border: none;
-        padding: 10px 20px; font-weight: bold; font-family: inherit;
-        cursor: pointer; margin-top: 20px;
-    }
-    .install-btn:hover { background: white; }
 
     /* BIOS SCREEN */
     #bios-screen {
@@ -180,24 +160,6 @@
 <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
 </head>
 <body>
-
-<div id="installer-screen">
-    <div class="install-box">
-        <h1 style="border-bottom: 1px solid #00ff41; padding-bottom: 10px;">/// DIVINE OS LINK ///</h1>
-        <p>SECURE CONNECTION ESTABLISHED.</p>
-        <p style="color:white; margin: 20px 0;">SHELL ACCESS RESTRICTED IN BROWSER MODE.</p>
-        <p>TO MOUNT THE FILE SYSTEM, YOU MUST INSTALL THE TERMINAL CLIENT.</p>
-        
-        <div style="margin-top: 30px; border: 1px dotted #00ff41; padding: 10px;">
-            INSTRUCTIONS:<br>
-            1. Look at your Address Bar (Top Right)<br>
-            2. Click the 🖥️ or ⊕ Icon<br>
-            3. Select "Install Divine OS"
-        </div>
-        
-        <p style="margin-top: 20px; font-size: 10px; opacity: 0.6;">SESSION ID: <span id="sess-id">LOADING...</span></p>
-    </div>
-</div>
 
 <div id="bios-screen">
     <div>DIVINE BIOS v8.5 (SECURE_BOOT)</div>
@@ -1357,33 +1319,20 @@ if(win) {
 };
 
 window.onload = function() {
-    // 1. Service Worker (Keep this, needed for install)
+    // 4. INSTALL APP
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js');
     }
 
-    // 2. Check Mode
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-
-    if (isStandalone) {
-        // --- APP MODE: RUN OS ---
-        const d = document.body;
-        d.addEventListener('dragover', e => { e.preventDefault(); document.getElementById('desktop').classList.add('drag-over'); });
-        d.addEventListener('dragleave', e => { e.preventDefault(); document.getElementById('desktop').classList.remove('drag-over'); });
-        d.addEventListener('drop', BIO.handleDrop);
-        
-        // START BOOT PROCESS (Will stop for Password)
-        BIO.reboot();
-        
-        setInterval(() => document.getElementById('clock').innerText = new Date().toLocaleTimeString(), 1000);
-    } else {
-        // --- BROWSER MODE: SHOW INSTALLER ONLY ---
-        document.getElementById('bios-screen').style.display = 'none';
-        document.getElementById('installer-screen').style.display = 'flex';
-        
-        // Generate random session ID for effect
-        document.getElementById('sess-id').innerText = Math.random().toString(36).substr(2, 9).toUpperCase();
-    }
+    const d = document.body;
+    d.addEventListener('dragover', e => { e.preventDefault(); document.getElementById('desktop').classList.add('drag-over'); });
+    d.addEventListener('dragleave', e => { e.preventDefault(); document.getElementById('desktop').classList.remove('drag-over'); });
+    d.addEventListener('drop', BIO.handleDrop);
+    
+    // START BOOT PROCESS (Will stop for Password)
+    BIO.reboot();
+    
+    setInterval(() => document.getElementById('clock').innerText = new Date().toLocaleTimeString(), 1000);
 }
 </script>
 </body>
