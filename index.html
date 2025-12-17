@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>DivineOS // Injector_Mode_v8.5</title>
+<title>DivineOS // Injector_Mode_v9.0_FULL</title>
 <link rel="manifest" href="manifest.json">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 
@@ -162,7 +162,7 @@
 <body>
 
 <div id="bios-screen">
-    <div>DIVINE BIOS v8.5 (SECURE_BOOT)</div>
+    <div>DIVINE BIOS v9.0 (SECURE_BOOT)</div>
     <div id="bios-status-line">System Status...</div>
     <br>
     <div id="boot-log"></div>
@@ -319,12 +319,17 @@ const icons = [
 
     {name: 'NEXUS',    icon: '🌍', run: '/core/nexus.js',    x:3, y:0, color:'#0000FF'},
     {name: 'SIGNAL',   icon: '📡', run: '/core/signal.js',   x:3, y:1, color:'#FF4400'},
-    {name: 'MESH',     icon: '🕸️', run: '/core/mesh.js',     x:3, y:2, color:'#3333FF'}
+    {name: 'MESH',     icon: '🕸️', run: '/core/mesh.js',     x:3, y:2, color:'#3333FF'},
+
+    /* --- NEW APPS (v9.0) --- */
+    {name: 'BLUESCAN', icon: '📡', run: '/core/bluescan.js', x:4, y:0, color:'#000088'},
+    {name: 'SUBSPACE', icon: '🛰️', run: '/core/subspace.js', x:4, y:1, color:'#005500'},
+    {name: 'IDENTITY', icon: '👁️', run: '/core/identity.js', x:4, y:2, color:'#AA0000'}
 ];
 
 // DYNAMIC ICON LOADING FOR INJECTOR
 if(BIO.resolve('/system/injector.flag')) {
-    icons.push({name: 'INJECTOR', icon: '💉', run: '/core/injector.js', x:4, y:0, color:'#CC0000'});
+    icons.push({name: 'INJECTOR', icon: '💉', run: '/core/injector.js', x:4, y:3, color:'#CC0000'});
 }
 
 icons.forEach(i => {
@@ -346,6 +351,85 @@ BIO.runScript('/core/terminal.js');`
             core: {
                 type: 'dir',
                 content: {
+                    // --- NEW APP 1: BLUESCAN ---
+                    "bluescan.js": { type: 'file', content: `
+const html = '<div style="background:#001133;color:#00ffff;padding:10px;height:100%;display:flex;flex-direction:column;font-family:monospace;">' +
+'<div style="border:1px solid #00ffff;padding:5px;text-align:center;">BLUETOOTH RADAR</div>' +
+'<button onclick="BlueScan.scan()" style="margin:10px;background:#00ffff;color:black;font-weight:bold;padding:10px;cursor:pointer;">INITIATE SCAN</button>' +
+'<div id="bs-log" style="flex:1;overflow:auto;border:1px dashed #005555;padding:5px;">Waiting for signal...</div></div>';
+window.BlueScan = {
+    scan: function() {
+        const log = document.getElementById('bs-log');
+        log.innerHTML += '<div>Scanning airwaves...</div>';
+        if (!navigator.bluetooth) { log.innerHTML += '<div style="color:red">BLUETOOTH API NOT SUPPORTED</div>'; return; }
+        navigator.bluetooth.requestDevice({ acceptAllDevices: true })
+        .then(device => {
+            log.innerHTML += '<div style="color:#0f0;margin-top:5px;">[FOUND] ' + (device.name || 'Unknown Device') + '</div>';
+            log.innerHTML += '<div style="color:#aaa;font-size:10px;">ID: ' + device.id + '</div>';
+            log.innerHTML += '<div style="color:#aaa;font-size:10px;">CONNECTED: ' + device.gatt.connected + '</div>';
+        })
+        .catch(error => { log.innerHTML += '<div style="color:red;">SCAN ABORTED: ' + error + '</div>'; });
+    }
+};
+Kernel.createWindow('BLUESCAN', 350, 400, html, 'win-blue');
+` },
+                    // --- NEW APP 2: SUBSPACE ---
+                    "subspace.js": { type: 'file', content: `
+const html = '<div style="background:black;color:#00ff00;padding:10px;height:100%;font-family:monospace;display:flex;flex-direction:column;">' +
+'<div style="border-bottom:1px solid #00ff00;margin-bottom:10px;">SUBSPACE NETWORK MAPPER</div>' +
+'<div id="ss-grid" style="flex:1;overflow:auto;"></div>' +
+'<button onclick="Subspace.pingAll()" style="background:#003300;color:#00ff00;border:1px solid #00ff00;padding:5px;cursor:pointer;">START SWEEP</button></div>';
+window.Subspace = {
+    targets: ['192.168.0.1','192.168.1.1','192.168.1.254','10.0.0.1','10.0.0.138','172.16.0.1','127.0.0.1'],
+    pingAll: function() {
+        const grid = document.getElementById('ss-grid');
+        grid.innerHTML = '<div>Initializing Ping Sequence...</div>';
+        Subspace.targets.forEach(ip => {
+            const row = document.createElement('div');
+            row.innerText = 'PING > ' + ip + ' ...';
+            grid.appendChild(row);
+            const start = Date.now();
+            fetch('http://'+ip, { mode: 'no-cors', signal: AbortSignal.timeout(1500) })
+            .then(() => { 
+                row.innerHTML = '<span style="color:#0f0">[ALIVE]</span> ' + ip + ' (' + (Date.now()-start) + 'ms)';
+            })
+            .catch(e => {
+                if(e.name === 'AbortError') row.innerHTML = '<span style="color:#555">[DEAD]</span> ' + ip;
+                else row.innerHTML = '<span style="color:#0f0">[ALIVE]</span> ' + ip + ' (Refused)';
+            });
+        });
+    }
+};
+Kernel.createWindow('SUBSPACE', 400, 450, html, 'win-sub');
+` },
+                    // --- NEW APP 3: IDENTITY ---
+                    "identity.js": { type: 'file', content: `
+const html = '<div style="background:#220000;color:#ff5555;padding:10px;height:100%;font-family:monospace;">' +
+'<div style="text-align:center;font-size:20px;border-bottom:2px solid red;">IDENTITY AUDIT</div>' +
+'<div id="id-data" style="margin-top:10px;">Loading...</div></div>';
+window.Identity = {
+    init: function() {
+        const d = document.getElementById('id-data');
+        let txt = '';
+        txt += '<div>USER_AGENT: <span style="color:white">' + navigator.userAgent + '</span></div><hr>';
+        txt += '<div>CPU CORES: <span style="color:white">' + (navigator.hardwareConcurrency || '?') + '</span></div>';
+        txt += '<div>RAM (Est): <span style="color:white">' + (navigator.deviceMemory || '?') + ' GB</span></div>';
+        txt += '<div>PLATFORM: <span style="color:white">' + navigator.platform + '</span></div>';
+        txt += '<div>LANGUAGE: <span style="color:white">' + navigator.language + '</span></div>';
+        txt += '<div>ONLINE: <span style="color:white">' + navigator.onLine + '</span></div>';
+        
+        if(navigator.getBattery) {
+            navigator.getBattery().then(b => {
+                const batt = '<div>BATTERY: <span style="color:white">' + (b.level*100) + '% ' + (b.charging?'[CHARGING]':'[DRAINING]') + '</span></div>';
+                d.innerHTML += batt;
+            });
+        }
+        d.innerHTML = txt;
+    }
+};
+Kernel.createWindow('IDENTITY', 400, 500, html, 'win-id');
+Identity.init();
+` },
                     // --- INJECTOR (HIDDEN APP) ---
                     "injector.js": {
                         type: 'file',
