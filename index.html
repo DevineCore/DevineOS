@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>DivineOS // Injector_Mode_v10.5_IDENTITY</title>
+<title>DivineOS // Injector_Mode_v10.6_FIXED</title>
 <link rel="manifest" href="manifest.json">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
 
 <style>
-    /* --- SYSTEM AESTHETICS (DARK/HACKER MODE - v9.5 BASELINE) --- */
+    /* --- SYSTEM AESTHETICS (DARK/HACKER MODE) --- */
     :root {
         --bg: #0000AA;
         --win: #FFFFFF;
@@ -53,7 +53,7 @@
     }
     #desktop.drag-over { background-color: rgba(255,255,255,0.2); }
 
-    /* IMMERSIVE NOTIFICATIONS (TOASTS) */
+    /* NOTIFICATIONS */
     #toast-container {
         position: absolute; top: 10px; right: 10px;
         width: 300px; display: flex; flex-direction: column; gap: 5px;
@@ -162,7 +162,7 @@
 <body>
 
 <div id="bios-screen">
-    <div>DIVINE BIOS v10.5 (ID_SYSTEM)</div>
+    <div>DIVINE BIOS v10.6 (CHOIR_CORE)</div>
     <div id="bios-status-line">System Status...</div>
     <br>
     <div id="boot-log"></div>
@@ -207,7 +207,7 @@ const BIO = {
     zIndex: 100,
     fs: null, 
     masterKey: null,
-    netID: null, // NEW: Network ID Storage
+    netID: null,
     
     // DEFAULT FS (CLEAN STATE)
     defaultFS: {
@@ -218,7 +218,7 @@ const BIO = {
                 type: 'dir',
                 content: {
                     "index.html": { type: 'file', content: `<h1>WELCOME TO DIVINE NET</h1><p>Local Secure Intranet.</p><hr><ul><li><a href="bookmarks.html">>> OPEN BOOKMARKS <<</a></li><li><a href="about.html">System Info</a></li><li><a href="contact.html">Contact Root</a></li></ul>` },
-                    "bookmarks.html": { type: 'file', content: `<style>body{font-family:monospace;padding:10px;} .warn{background:#ffcccc;border:2px solid red;padding:10px;margin-bottom:20px;color:red;font-weight:bold;} .safe{background:#ccffcc;border:2px solid green;padding:10px;margin-bottom:10px;color:green;font-weight:bold;}</style><h1>NEXUS GATEWAY</h1><div class="warn">⚠ SEARCH PRIVACY: URLs typed in the bar above are private. Google searches inside the frame are logged by Google.</div><h3>COMPATIBLE SITES</h3><ul><li><a href="https://www.google.com/webhp?igu=1">Google (Unblocked Mode)</a></li><li><a href="https://www.wikipedia.org">Wikipedia</a></li><li><a href="https://yewtu.be">Invidious (YouTube Alt)</a></li><li><a href="https://web.archive.org">Wayback Machine</a></li></ul><hr><a href="index.html">Back to Local Index</a>` },
+                    "bookmarks.html": { type: 'file', content: `<style>body{font-family:monospace;padding:10px;} .warn{background:#ffcccc;border:2px solid red;padding:10px;margin-bottom:20px;color:red;font-weight:bold;} .safe{background:#ccffcc;border:2px solid green;padding:10px;margin-bottom:10px;color:green;font-weight:bold;}</style><h1>NEXUS GATEWAY</h1><div class="warn">⚠ NOTICE: Standard sites (YouTube, Google) block iframes. Use the ASTRAL MIRRORS below.</div><h3>ASTRAL MIRRORS (UNBLOCKED)</h3><ul><li><a href="https://yewtu.be">YouTube (Yewtu.be Mirror)</a></li><li><a href="https://google.com/webhp?igu=1">Google (Unblocked Mode)</a></li><li><a href="https://nitter.net">Twitter (Nitter Mirror)</a></li><li><a href="https://libreddit.frehed.org">Reddit (LibReddit Mirror)</a></li><li><a href="https://duckduckgo.com">DuckDuckGo (Privacy Search)</a></li><li><a href="https://web.archive.org">Wayback Machine</a></li></ul><hr><a href="index.html">Back to Local Index</a>` },
                     "about.html": { type: 'file', content: `<h1>ABOUT</h1><p>DivineOS is a Javascript based environment running in local RAM.</p><a href="index.html">Back</a>` },
                     "contact.html": { type: 'file', content: `<h1>CONTACT</h1><p>Admin: ROOT_USER</p><a href="index.html">Back</a>` }
                 }
@@ -322,8 +322,7 @@ const icons = [
     {name: 'ORACLE',   icon: '🛰️', run: '/core/subspace.js', x:4, y:1, color:'#005500', flag:'subspace.flag'},
     {name: 'WITNESS',  icon: '👁️', run: '/core/identity.js', x:4, y:2, color:'#AA0000', flag:'identity.flag'},
     {name: 'INJECTOR', icon: '💉', run: '/core/injector.js', x:4, y:3, color:'#CC0000', flag:'injector.flag'},
-    {name: 'BURNING',  icon: '🔥', run: '/core/heatwave.js', x:5, y:0, color:'#FF3300', flag:'heatwave.flag'},
-    {name: 'CHOIR',    icon: '📣', run: '/core/choir.js',    x:5, y:1, color:'#AA0000', flag:'choir.flag'}
+    {name: 'BURNING',  icon: '🔥', run: '/core/heatwave.js', x:5, y:0, color:'#FF3300', flag:'heatwave.flag'}
 ];
 
 icons.forEach(i => {
@@ -346,7 +345,7 @@ BIO.runScript('/core/terminal.js');`
             core: {
                 type: 'dir',
                 content: {
-                    // --- NET_ID INTEGRATED APPS ---
+                    // --- NEW: THE HOLY CHOIR (Hidden App) ---
                     "choir.js": { type: 'file', content: `
 const html = '<div style="background:#111; color:white; padding:10px; height:100%; display:flex; flex-direction:column; font-family:monospace;">' +
 '<div style="text-align:center; border-bottom:2px solid #500; margin-bottom:10px; padding-bottom:5px; font-weight:bold; color:#f55;">THE HOLY CHOIR</div>' +
@@ -371,7 +370,7 @@ window.Choir = {
     setMode: function(m) {
         Choir.mode = m;
         document.getElementById('choir-setup').style.display = 'none';
-        let id = localStorage.getItem('divineOS_net_id'); // USE PERMANENT ID
+        let id = localStorage.getItem('divineOS_net_id');
         if(m === 'send') {
             document.getElementById('choir-admin').style.display = 'flex';
             Choir.initPeer(id);
@@ -435,250 +434,17 @@ window.Choir = {
 };
 Kernel.createWindow('HOLY CHOIR', 400, 500, html, 'win-choir');
 ` },
-                    "signal.js": {
-                        type: 'file',
-                        content: `
-const html = '<div style="display:flex; height:100%; font-family:monospace; background:#111;">' +
-    '<div style="width:140px; background:#222; border-right:1px solid #444; display:flex; flex-direction:column;">' +
-        '<div style="padding:5px; border-bottom:1px solid #444; color:#fff; font-weight:bold; text-align:center;">CONTACTS</div>' +
-        '<div id="sig-contacts" style="flex:1; overflow:auto;"></div>' +
-        '<div id="sig-add-ui" style="display:none; padding:5px; background:#333;">' +
-            '<input id="sig-add-inp" style="width:100%;" placeholder="Name">' +
-            '<button onclick="Signal.confirmAdd()">OK</button>' +
-        '</div>' +
-        '<button onclick="Signal.showAdd()" style="background:#005500; color:white; border:none; padding:5px; cursor:pointer;">+ ADD USER</button>' +
-    '</div>' +
-    '<div style="flex:1; display:flex; flex-direction:column;">' +
-        '<div id="sig-chat" style="display:flex; flex-direction:column; height:100%;">' +
-            '<div style="padding:5px; background:#333; color:#fff; border-bottom:1px solid #000; display:flex; justify-content:space-between; align-items:center;">' +
-                '<span>ID: <span id="sig-myid" style="color:#0f0;">...</span></span>' +
-                '<span style="font-size:10px; color:#aaa;">AUTO-LOGIN</span>' +
-            '</div>' +
-            '<div id="sig-log" style="flex:1; overflow:auto; padding:10px; color:#ccc;"></div>' +
-            '<div style="display:flex; padding:5px; background:#222;">' +
-                '<input id="sig-msg" style="flex:1; background:black; color:white; border:1px solid #555;" placeholder="Message..." onkeydown="if(event.key===\\\'Enter\\\')Signal.send()">' +
-                '<button onclick="Signal.send()">SEND</button>' +
-            '</div>' +
-        '</div>' +
-    '</div>' +
-    '</div>';
-
-window.Signal = {
-    peer: null, conn: null, contacts: [],
-    init: function() {
-        const saved = localStorage.getItem('divineOS_signal_contacts');
-        if(saved) Signal.contacts = JSON.parse(saved);
-        Signal.renderContacts();
-        Signal.login(); // AUTO LOGIN WITH PERMANENT ID
-    },
-    login: function() {
-        const user = localStorage.getItem('divineOS_net_id'); // GET NET_ID
-        if(!user) return BIO.toast("ID Error: Reboot");
-        Signal.peer = new Peer(user);
-        Signal.peer.on('open', (id) => {
-            document.getElementById('sig-myid').innerText = id;
-            BIO.toast("SIGNAL: Online (" + id + ")");
-        });
-        Signal.peer.on('error', (err) => { BIO.toast("Net Error: " + err.type); });
-        Signal.peer.on('connection', (c) => {
-            Signal.conn = c;
-            Signal.setupConn();
-            BIO.toast("Incoming Connection...");
-            Signal.log("<i>Incoming connection...</i>");
-        });
-    },
-    showAdd: function() { document.getElementById('sig-add-ui').style.display = 'block'; },
-    confirmAdd: function() {
-        const name = document.getElementById('sig-add-inp').value;
-        if(name) {
-            Signal.contacts.push(name);
-            localStorage.setItem('divineOS_signal_contacts', JSON.stringify(Signal.contacts));
-            Signal.renderContacts();
-        }
-        document.getElementById('sig-add-ui').style.display = 'none';
-    },
-    renderContacts: function() {
-        const list = document.getElementById('sig-contacts');
-        if(!list) return;
-        list.innerHTML = '';
-        Signal.contacts.forEach(c => {
-            const div = document.createElement('div');
-            div.style.padding = '5px'; div.style.cursor = 'pointer'; div.style.color = '#ccc';
-            div.style.borderBottom = '1px solid #333';
-            div.innerText = c;
-            div.onmouseover = () => { div.style.background = '#444'; div.style.color = 'white'; };
-            div.onmouseout = () => { div.style.background = 'transparent'; div.style.color = '#ccc'; };
-            div.onclick = () => Signal.connectTo(c);
-            list.appendChild(div);
-        });
-    },
-    connectTo: function(id) {
-        if(!Signal.peer) return BIO.toast("Login first.");
-        Signal.conn = Signal.peer.connect(id);
-        Signal.setupConn();
-        Signal.log("<i>Connecting to " + id + "...</i>");
-    },
-    setupConn: function() {
-        Signal.conn.on('open', () => { Signal.log("<b style='color:#0f0'>Connected.</b>"); });
-        Signal.conn.on('data', (data) => {
-            Signal.log("<b style='color:cyan'>" + Signal.conn.peer + ":</b> " + data);
-            BIO.toast("Message from " + Signal.conn.peer);
-        });
-        Signal.conn.on('close', () => Signal.log("<i>Disconnected.</i>"));
-    },
-    send: function() {
-        const inp = document.getElementById('sig-msg');
-        const msg = inp.value;
-        if(!msg || !Signal.conn) return;
-        Signal.conn.send(msg);
-        Signal.log("<b>Me:</b> " + msg);
-        inp.value = '';
-    },
-    log: function(html) {
-        const div = document.getElementById('sig-log');
-        div.innerHTML += '<div>'+html+'</div>';
-        div.scrollTop = div.scrollHeight;
-    }
-};
-Kernel.createWindow('SIGNAL', 550, 400, html, 'win-signal');
-setTimeout(Signal.init, 100);
-`
-                    },
-                    "mesh.js": {
-                        type: 'file',
-                        content: `
-const html = '<div style="display:flex; flex-direction:column; height:100%; font-family:monospace;">' +
-    '<div style="background:#222; color:#0f0; padding:10px; border-bottom:2px solid #0f0; display:flex; gap:10px;">' +
-        '<span>ID: <span id="mesh-id" style="color:white;">...</span></span>' +
-        '<input id="mesh-target" placeholder="Peer ID" style="flex:1; background:black; color:white; border:1px solid #555;">' +
-        '<button onclick="Mesh.connect()">CONNECT</button>' +
-    '</div>' +
-    '<div style="flex:1; display:flex; background:black;">' +
-        '<div style="flex:1; border-right:2px solid #555; display:flex; flex-direction:column;">' +
-            '<div style="background:#0000AA; color:white; padding:5px; text-align:center;">LOCAL (/home/public)</div>' +
-            '<div id="mesh-local" style="flex:1; overflow:auto; padding:5px; color:white;"></div>' +
-            '<button onclick="Mesh.refreshLocal()" style="background:#444; color:white;">REFRESH LOCAL</button>' +
-        '</div>' +
-        '<div style="flex:1; display:flex; flex-direction:column;">' +
-            '<div style="background:#AA0000; color:white; padding:5px; text-align:center;">REMOTE DRIVE</div>' +
-            '<div id="mesh-remote" style="flex:1; overflow:auto; padding:5px; color:#ccc;">NOT CONNECTED</div>' +
-            '<button onclick="Mesh.requestList()" style="background:#444; color:white;">REFRESH REMOTE</button>' +
-        '</div>' +
-    '</div>' +
-    '<div id="mesh-log" style="height:30px; background:#111; color:gray; padding:5px; font-size:12px; border-top:1px solid #555;">Ready.</div>' +
-'</div>';
-
-window.Mesh = {
-    peer: null, conn: null,
-    init: function() {
-        if(!BIO.resolve('/home/public')) BIO.saveFile('/home/public/readme.txt', 'Put files here to share.');
-        let user = localStorage.getItem('divineOS_net_id'); // AUTO ID
-        if(!user) return;
-        const meshId = user + '_net';
-        Mesh.peer = new Peer(meshId);
-        Mesh.peer.on('open', (id) => {
-            document.getElementById('mesh-id').innerText = id.replace('_net','');
-            Mesh.log("Mesh Node Active: " + id);
-            Mesh.refreshLocal();
-        });
-        Mesh.peer.on('connection', (c) => {
-            Mesh.conn = c;
-            Mesh.setupConn();
-            Mesh.log("Incoming connection from " + c.peer);
-        });
-        Mesh.peer.on('error', (e) => Mesh.log("Error: " + e.type));
-    },
-    connect: function() {
-        const target = document.getElementById('mesh-target').value.trim();
-        if(!target) return;
-        Mesh.log("Connecting to " + target + "...");
-        Mesh.conn = Mesh.peer.connect(target + '_net');
-        Mesh.setupConn();
-    },
-    setupConn: function() {
-        Mesh.conn.on('open', () => {
-            Mesh.log("Connected to " + Mesh.conn.peer);
-            document.getElementById('mesh-remote').innerHTML = '<div style="text-align:center; padding:20px;">ACCESS GRANTED<br>Loading...</div>';
-            Mesh.requestList();
-        });
-        Mesh.conn.on('data', (data) => {
-            if(data.type === 'list_req') {
-                const dir = BIO.resolve('/home/public');
-                const list = dir ? Object.keys(dir) : [];
-                Mesh.conn.send({type: 'list_res', list: list});
-            }
-            else if(data.type === 'list_res') Mesh.renderRemote(data.list);
-            else if(data.type === 'get_file') {
-                const file = BIO.resolve('/home/public/' + data.name);
-                if(file) Mesh.conn.send({type: 'file_data', name: data.name, content: file.content});
-            }
-            else if(data.type === 'file_data') {
-                BIO.saveFile('/home/public/' + data.name, data.content);
-                Mesh.log("Downloaded: " + data.name);
-                Mesh.refreshLocal();
-            }
-            else if(data.type === 'upload_file') {
-                BIO.saveFile('/home/public/' + data.name, data.content);
-                Mesh.log("Received Upload: " + data.name);
-                Mesh.refreshLocal();
-            }
-        });
-        Mesh.conn.on('close', () => {
-            Mesh.log("Connection Lost");
-            document.getElementById('mesh-remote').innerHTML = 'DISCONNECTED';
-        });
-    },
-    refreshLocal: function() {
-        const div = document.getElementById('mesh-local');
-        div.innerHTML = '';
-        const dir = BIO.resolve('/home/public');
-        if(!dir) return;
-        for(let key in dir) {
-            const row = document.createElement('div');
-            row.style.borderBottom = '1px dotted #555';
-            row.style.cursor = 'pointer';
-            row.style.padding = '2px';
-            row.innerText = '📄 ' + key;
-            row.onclick = () => {
-                if(Mesh.conn && confirm("UPLOAD " + key + " to Remote Peer?")) {
-                    const f = BIO.resolve('/home/public/' + key);
-                    Mesh.conn.send({type: 'upload_file', name: key, content: f.content});
-                    Mesh.log("Uploading...");
-                }
-            };
-            div.appendChild(row);
-        }
-    },
-    requestList: function() { if(Mesh.conn) Mesh.conn.send({type: 'list_req'}); },
-    renderRemote: function(list) {
-        const div = document.getElementById('mesh-remote');
-        div.innerHTML = '';
-        list.forEach(key => {
-            const row = document.createElement('div');
-            row.style.borderBottom = '1px dotted #555';
-            row.style.cursor = 'pointer';
-            row.style.padding = '2px';
-            row.innerText = '📄 ' + key;
-            row.onclick = () => {
-                if(confirm("DOWNLOAD " + key + " to local drive?")) {
-                    Mesh.conn.send({type: 'get_file', name: key});
-                    Mesh.log("Requesting " + key + "...");
-                }
-            };
-            div.appendChild(row);
-        });
-    },
-    log: function(msg) { document.getElementById('mesh-log').innerText = "> " + msg; }
-};
-Kernel.createWindow('MESH DRIVE', 600, 400, html, 'win-mesh');
-setTimeout(Mesh.init, 100);
-`
-                    },
+                    // --- HEATWAVE (TEMPLE STYLE) ---
                     "heatwave.js": { type: 'file', content: `const html = '<div style="background:#FFFFFF;color:#000000;padding:10px;height:100%;font-family:monospace;display:flex;flex-direction:column;border:4px double #AA0000;"><div style="text-align:center;font-size:24px;border-bottom:4px double #AA0000;margin-bottom:10px;color:#AA0000;font-weight:bold;">BURNING BUSH</div><div style="flex:1;text-align:center;display:flex;flex-direction:column;justify-content:center;"><div id="hw-status" style="font-size:18px;margin-bottom:20px;background:#AA0000;color:white;padding:5px;">STATUS: COLD</div><div id="hw-count" style="margin-bottom:10px;font-weight:bold;">THREADS: 0</div></div><button id="hw-btn" onclick="Heatwave.toggle()" style="padding:20px;font-size:20px;font-weight:bold;background:#AA0000;color:white;border:4px outset #ff0000;cursor:pointer;">IGNITE FIRE</button></div>';window.Heatwave={workers:[],toggle:function(){const btn=document.getElementById('hw-btn');const stat=document.getElementById('hw-status');const count=document.getElementById('hw-count');if(Heatwave.workers.length>0){Heatwave.workers.forEach(w=>w.terminate());Heatwave.workers=[];btn.innerText="IGNITE FIRE";btn.style.background="#AA0000";btn.style.color="white";stat.innerText="STATUS: EXTINGUISHED";stat.style.background="#0000AA";count.innerText="THREADS: 0"}else{const cores=navigator.hardwareConcurrency||4;const threads=cores*2;const blob=new Blob([\`self.onmessage=function(){while(true){Math.random()}}\`],{type:'application/javascript'});const url=URL.createObjectURL(blob);for(let i=0;i<threads;i++){const w=new Worker(url);w.postMessage('burn');Heatwave.workers.push(w)}btn.innerText="CEASE FIRE";btn.style.background="#000000";btn.style.color="red";stat.innerText="⚠ WARNING: BURNING ⚠";stat.style.background="red";count.innerText="THREADS: "+threads}}};Kernel.createWindow('BURNING BUSH',350,400,html,'win-heat');` },
                     "bluescan.js": { type: 'file', content: `const html = '<div style="background:#0000AA;color:#FFFFFF;padding:10px;height:100%;display:flex;flex-direction:column;font-family:monospace;border:4px double white;"><div style="border-bottom:2px solid white;padding:5px;text-align:center;font-size:20px;font-weight:bold;">SPIRIT RECEIVER</div><button onclick="BlueScan.scan()" style="margin:10px 0;background:white;color:blue;font-weight:bold;padding:10px;cursor:pointer;border:4px outset #cccccc;">SCAN ETHER</button><div id="bs-log" style="flex:1;overflow:auto;border:2px solid white;padding:5px;background:white;color:black;">Waiting for spirit...</div></div>';window.BlueScan={scan:function(){const log=document.getElementById('bs-log');log.innerHTML+='<div>Scanning...</div>';if(!navigator.bluetooth){log.innerHTML+='<div style="color:red">HARDWARE MISSING</div>';return}navigator.bluetooth.requestDevice({acceptAllDevices:true}).then(device=>{log.innerHTML+='<div style="background:#ccc;margin-top:5px;font-weight:bold;">FOUND: '+(device.name||'Unknown Device')+'</div>';log.innerHTML+='<div style="font-size:10px;">ID: '+device.id+'</div>'}).catch(error=>{log.innerHTML+='<div style="color:red;">SILENCE.</div>'})}};Kernel.createWindow('SPIRIT WAVE',350,400,html,'win-blue');` },
                     "subspace.js": { type: 'file', content: `const html = '<div style="background:#00AAAA;color:black;padding:10px;height:100%;font-family:monospace;display:flex;flex-direction:column;border:4px double black;"><div style="border-bottom:2px solid black;margin-bottom:10px;text-align:center;font-size:20px;font-weight:bold;">ORACLE MAPPER</div><div id="ss-grid" style="flex:1;overflow:auto;border:2px solid black;padding:5px;background:white;"></div><button onclick="Subspace.pingAll()" style="margin-top:10px;background:white;color:black;border:4px outset black;padding:8px;cursor:pointer;font-weight:bold;">CAST NET</button></div>';window.Subspace={targets:['192.168.0.1','192.168.1.1','192.168.1.254','10.0.0.1','10.0.0.138','172.16.0.1','127.0.0.1'],pingAll:function(){const grid=document.getElementById('ss-grid');grid.innerHTML='<div>Mapping...</div>';Subspace.targets.forEach(ip=>{const row=document.createElement('div');row.style.borderBottom='1px dotted black';row.innerText='PING > '+ip;grid.appendChild(row);const start=Date.now();fetch('http://'+ip,{mode:'no-cors',signal:AbortSignal.timeout(1500)}).then(()=>{row.innerHTML='<span style="color:green;font-weight:bold;">[ALIVE]</span> '+ip}).catch(e=>{if(e.name==='AbortError')row.innerHTML='<span style="color:grey;">[DEAD]</span> '+ip;else row.innerHTML='<span style="color:green;font-weight:bold;">[ALIVE]</span> '+ip})})}};Kernel.createWindow('ORACLE NET',400,450,html,'win-sub');` },
                     "identity.js": { type: 'file', content: `const html = '<div style="background:#FFFFFF;color:#0000AA;padding:10px;height:100%;font-family:monospace;border:4px double #0000AA;"><div style="text-align:center;font-size:20px;border-bottom:4px double #0000AA;margin-bottom:10px;font-weight:bold;">SOUL WITNESS</div><div id="id-data" style="margin-top:10px;padding:10px;border:2px solid #0000AA;">Loading...</div></div>';window.Identity={init:function(){const d=document.getElementById('id-data');let txt='';txt+='<div>AGENT: '+navigator.userAgent.substring(0,30)+'...</div><hr style="border-top:1px solid #0000AA;">';txt+='<div>CORES: '+(navigator.hardwareConcurrency||'?')+'</div>';txt+='<div>RAM: '+(navigator.deviceMemory||'?')+' GB</div>';txt+='<div>PLATFORM: '+navigator.platform+'</div>';txt+='<div>LANGUAGE: '+navigator.language+'</div>';txt+='<div>ONLINE: '+navigator.onLine+'</div>';if(navigator.getBattery){navigator.getBattery().then(b=>{const batt='<div>POWER: '+(b.level*100)+'% '+(b.charging?'[CHARGING]':'[DRAINING]')+'</div>';d.innerHTML+=batt})}d.innerHTML=txt}};Kernel.createWindow('SOUL WITNESS',400,500,html,'win-id');Identity.init();` },
                     "injector.js": { type: 'file', content: "const html='<div style=\"padding:10px;background:#111;color:#0f0;height:100%\"><b>INJECTOR MODE</b><br><br><input type=\"color\" oninput=\"document.documentElement.style.setProperty(\\'--bg\\',this.value)\"><br>Background Color<br><br><input type=\"color\" oninput=\"document.documentElement.style.setProperty(\\'--accent\\',this.value)\"><br>Accent Color<br><br><button onclick=\"BIO.saveFile(\\'/system/injector.flag\\',\\'TRUE\\');BIO.toast(\\'PERMANENT ROOT ACCESS GRANTED\\')\">UNLOCK PERMANENT ROOT</button></div>';Kernel.createWindow('INJECTOR',300,400,html,'win-inj');" },
+                    
+                    // --- MESH & SIGNAL WITH ID ---
+                    "mesh.js": { type: 'file', content: `const html='<div style="background:#222;color:white;padding:10px;height:100%"><b>MESH NETWORK</b><br>ID: <span id="m-id">...</span><br><br><input id="m-target" placeholder="Target ID"><button onclick="Mesh.conn()">CONNECT</button><div id="m-log"></div></div>';window.Mesh={init:function(){let u=localStorage.getItem('divineOS_net_id');if(!u)return;const p=new Peer(u+'_net');p.on('open',i=>document.getElementById('m-id').innerText=i);p.on('connection',c=>{Mesh.c=c;c.on('data',d=>BIO.toast('MESH DATA: '+d))})},conn:function(){const t=document.getElementById('m-target').value;const c=new Peer().connect(t+'_net');c.on('open',()=>c.send('HELLO FROM MESH'))}};Kernel.createWindow('MESH',300,300,html,'win-mesh');setTimeout(Mesh.init,1000);` },
+                    "signal.js": { type: 'file', content: `const html='<div style="display:flex;height:100%;font-family:monospace;background:#111;"><div style="width:140px;background:#222;border-right:1px solid #444;padding:5px;"><div style="color:#fff;font-weight:bold;text-align:center;border-bottom:1px solid #444">CONTACTS</div><div id="sig-contacts"></div><button onclick="Signal.add()" style="width:100%;margin-top:5px">+ ADD</button></div><div style="flex:1;display:flex;flex-direction:column;"><div id="sig-chat" style="flex:1;overflow:auto;padding:10px;color:#ccc"></div><div style="display:flex;padding:5px;background:#222"><input id="sig-msg" style="flex:1"><button onclick="Signal.send()">SEND</button></div></div></div>';window.Signal={init:function(){let u=localStorage.getItem('divineOS_net_id');if(u){const p=new Peer(u);p.on('open',i=>BIO.toast('Signal Online: '+i));p.on('connection',c=>{Signal.c=c;c.on('data',d=>document.getElementById('sig-chat').innerHTML+='<div>THEM: '+d+'</div>')})}},send:function(){const m=document.getElementById('sig-msg').value;if(Signal.c){Signal.c.send(m);document.getElementById('sig-chat').innerHTML+='<div>ME: '+m+'</div>'}}};Kernel.createWindow('SIGNAL',500,400,html,'win-sig');setTimeout(Signal.init,100);` },
+                    
                     "nexus.js": { type: 'file', content: "const id='win-nexus';const html='<div style=\"display:flex;flex-direction:column;height:100%;background:#ccc\"><div style=\"padding:5px;display:flex;gap:5px\"><input id=\"nx-url\" value=\"/www/bookmarks.html\" style=\"flex:1\" onkeydown=\"if(event.key===\\'Enter\\')Nexus.go()\"><button onclick=\"Nexus.go()\">GO</button></div><iframe id=\"nx-frame\" style=\"flex:1;border:none\"></iframe></div>';window.Nexus={go:function(){let u=document.getElementById('nx-url').value;if(u.includes('youtube.com'))u='https://yewtu.be';if(u.includes('reddit.com'))u='https://libreddit.frehed.org';const f=document.getElementById('nx-frame');if(u.startsWith('/www')){const file=BIO.resolve(u);f.srcdoc=file?file.content:'404'}else{f.src=u.startsWith('http')?u:'https://'+u}}};Kernel.createWindow('NEXUS',600,500,html,id);Nexus.go();" },
                     "taskmgr.js": { type: 'file', content: `const html = '<div style="height:100%; display:flex; flex-direction:column; padding:10px;"><div style="border-bottom:1px solid black; font-weight:bold;">ACTIVE PROCESSES</div><div id="proc-list" style="flex:1; overflow:auto; margin-top:5px;"></div><button onclick="TaskMgr.refresh()" style="margin-top:5px;">REFRESH</button></div>';window.TaskMgr = {refresh: function() {const list = document.getElementById('proc-list');list.innerHTML = '';const wins = window.Kernel.activeWindows;for(let id in wins) {const row = document.createElement('div');row.style.borderBottom = '1px dotted #ccc';row.style.display = 'flex'; row.style.justifyContent = 'space-between';row.innerHTML = '<span>'+wins[id]+'</span> <button onclick="Kernel.closeWindow(\\''+id+'\\');TaskMgr.refresh()" style="background:red;color:white;border:none;cursor:pointer;">KILL</button>';list.appendChild(row)}}};Kernel.createWindow('TASK_MANAGER', 300, 400, html, 'win-taskmgr');TaskMgr.refresh();` },
                     "config_editor.js": { type: 'file', content: `const html = '<div style="height:100%; display:flex; flex-direction:column; padding:10px;"><h3>SYSTEM CONFIGURATION</h3><p>Changes apply immediately upon save.</p><textarea id="cfg-data" style="flex:1; margin-bottom:10px; font-family:monospace;"></textarea><button onclick="Config.save()" style="padding:10px;">SAVE & APPLY</button></div>';window.Config = {init: function() {const file = BIO.resolve('/system/config.json');if(file) document.getElementById('cfg-data').value = file.content.trim();},save: function() {const data = document.getElementById('cfg-data').value;try { JSON.parse(data); } catch(e) { return BIO.toast("INVALID JSON"); }BIO.saveFile('/system/config.json', data);BIO.applyTheme();}};Kernel.createWindow('SETTINGS', 400, 500, html, 'win-cfg');Config.init();` },
@@ -790,8 +556,7 @@ setTimeout(Mesh.init, 100);
         // --- 3. ENCRYPTION ON SAVE ---
         if(BIO.masterKey) {
             const str = JSON.stringify(BIO.fs);
-            const encrypted = CryptoJS.AES.encrypt(str, BIO.masterKey).toString();
-            localStorage.setItem('divineOS_disk', encrypted);
+            localStorage.setItem('divineOS_disk', CryptoJS.AES.encrypt(str, BIO.masterKey).toString());
         }
         
         if(path === '/system/config.json') BIO.applyTheme();
@@ -799,9 +564,6 @@ setTimeout(Mesh.init, 100);
         if(!silent && !isDir) BIO.toast("Saved: " + fileName);
         if(document.getElementById('win-manifest')) Manifest.render(path.substring(0, path.lastIndexOf('/')) || '/');
     },
-    
-    // --- FIXED ID VALIDATION LOGIC ---
-    // (This block will be expanded in v10.5 for the ID creation logic)
     
     deleteFile: function(path) {
         const parts = path.split('/').filter(p=>p);
@@ -826,8 +588,7 @@ setTimeout(Mesh.init, 100);
     factoryReset: function() {
         if(confirm("DESTROY DATA?")) {
             localStorage.removeItem('divineOS_disk');
-            // ID WIPE
-            localStorage.removeItem('divineOS_net_id');
+            localStorage.removeItem('divineOS_net_id'); // RESET ID TOO
             localStorage.removeItem('divineOS_signal_user');
             localStorage.removeItem('divineOS_signal_contacts');
             location.reload();
@@ -844,7 +605,7 @@ setTimeout(Mesh.init, 100);
         const pass = document.getElementById('boot-pass').value;
         if(!pass) return alert("KEY REQUIRED");
         
-        // --- NEW: ID CAPTURE (v10.5) ---
+        // --- NEW: ID CAPTURE ---
         const idInput = document.getElementById('boot-id');
         if(idInput.style.display !== 'none') {
             const idVal = idInput.value.toUpperCase();
@@ -852,7 +613,6 @@ setTimeout(Mesh.init, 100);
             BIO.netID = idVal;
             localStorage.setItem('divineOS_net_id', idVal);
         } else {
-            // Load existing ID if available
             BIO.netID = localStorage.getItem('divineOS_net_id');
         }
 
@@ -870,7 +630,7 @@ setTimeout(Mesh.init, 100);
             document.getElementById('bios-screen').style.display = 'flex';
             document.getElementById('auth-msg').innerText = "SYSTEM LOCKED // DECRYPT";
             document.getElementById('auth-ui').style.display = 'block';
-            document.getElementById('boot-id').style.display = 'none'; // Hide ID input on unlock
+            document.getElementById('boot-id').style.display = 'none';
             return;
         }
         if(!saved && !BIO.masterKey && !isUnlocked) {
@@ -879,7 +639,7 @@ setTimeout(Mesh.init, 100);
             document.getElementById('bios-screen').style.display = 'flex';
             document.getElementById('auth-msg').innerText = "NEW SYSTEM // CREATE KEY & ID";
             document.getElementById('auth-ui').style.display = 'block';
-            document.getElementById('boot-id').style.display = 'block'; // Show ID input on new system
+            document.getElementById('boot-id').style.display = 'block';
             return;
         }
 
