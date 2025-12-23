@@ -2,9 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>DivineOS // PDF_Reader_v9.9_STABLE</title>
+<title>DivineOS // PDF_Engine_v9.9.5</title>
 <link rel="manifest" href="manifest.json">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+    // Initialize PDF Worker
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+</script>
 
 <style>
     /* --- SYSTEM AESTHETICS --- */
@@ -163,12 +169,11 @@
     .poly-btn:hover { background: cyan; color: black; }
     .poly-log { height: 60px; background: black; color: cyan; font-size: 10px; padding: 5px; overflow-y: auto; border-top: 2px solid white; }
 </style>
-<script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
 </head>
 <body>
 
 <div id="bios-screen">
-    <div>DIVINE BIOS v9.9 (PDF_FIX)</div>
+    <div>DIVINE BIOS v9.9.5 (PDF_ENGINE)</div>
     <div id="bios-status-line">System Status...</div>
     <br>
     <div id="boot-log"></div>
@@ -1479,10 +1484,22 @@ if(win) {
         const file = BIO.resolve(path);
         if(!file || file.type !== 'file') return BIO.toast("FILE NOT FOUND: " + path);
         try {
+            // PDF HANDLER
             if(file.content.startsWith('data:application/pdf')) {
                 const title = path.split('/').pop().toUpperCase();
-                const html = '<iframe src="'+file.content+'" style="width:100%;height:100%;border:none;"></iframe>';
+                const uid = 'pdf-' + Date.now();
+                const html = '<div style="display:flex; flex-direction:column; height:100%; background:#222; color:#fff;">' +
+                    '<div style="display:flex; justify-content:space-between; padding:5px; background:#444; border-bottom:1px solid #000;">' +
+                        '<button onclick="PDFView.prev(\\''+uid+'\\')" style="background:#000; color:#fff; border:1px solid #fff; cursor:pointer;">&lt; PREV</button>' +
+                        '<span id="page-num-'+uid+'">PAGE 1</span>' +
+                        '<button onclick="PDFView.next(\\''+uid+'\\')" style="background:#000; color:#fff; border:1px solid #fff; cursor:pointer;">NEXT &gt;</button>' +
+                    '</div>' +
+                    '<div style="flex:1; overflow:auto; display:flex; justify-content:center; padding:10px; background:#111;">' +
+                        '<canvas id="cvs-'+uid+'"></canvas>' +
+                    '</div>' +
+                '</div>';
                 Kernel.createWindow(title, 600, 800, html);
+                setTimeout(() => PDFView.load(uid, file.content), 100);
                 return;
             }
             if(file.content.startsWith('data:image')) {
@@ -1567,6 +1584,7 @@ if(win) {
                     const file = items[i].getAsFile();
                     let name = file.name;
                     
+                    // PDF HANDLING
                     if(file.type === 'application/pdf') {
                         const reader = new FileReader();
                         reader.onload = function(evt) {
@@ -1603,6 +1621,55 @@ if(win) {
         if (imageUrl) {
             BIO.saveFile('/home/link_' + Date.now() + '.html', '<html><body><img src="'+imageUrl+'"></body></html>');
         }
+    }
+};
+
+/* --- PDF VIEWER ENGINE --- */
+window.PDFView = {
+    instances: {},
+    load: function(uid, dataUrl) {
+        const loadingTask = pdfjsLib.getDocument(dataUrl);
+        loadingTask.promise.then(function(pdf) {
+            PDFView.instances[uid] = {
+                pdf: pdf,
+                page: 1,
+                numPages: pdf.numPages
+            };
+            PDFView.render(uid);
+        }, function(reason) {
+            console.error(reason);
+            BIO.toast("PDF ERROR: " + reason);
+        });
+    },
+    render: function(uid) {
+        const inst = PDFView.instances[uid];
+        if(!inst) return;
+        
+        inst.pdf.getPage(inst.page).then(function(page) {
+            const scale = 1.5;
+            const viewport = page.getViewport({scale: scale});
+            const canvas = document.getElementById('cvs-'+uid);
+            const context = canvas.getContext('2d');
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            const renderContext = {
+                canvasContext: context,
+                viewport: viewport
+            };
+            page.render(renderContext);
+            document.getElementById('page-num-'+uid).innerText = "PAGE " + inst.page + " / " + inst.numPages;
+        });
+    },
+    prev: function(uid) {
+        if(PDFView.instances[uid].page <= 1) return;
+        PDFView.instances[uid].page--;
+        PDFView.render(uid);
+    },
+    next: function(uid) {
+        if(PDFView.instances[uid].page >= PDFView.instances[uid].numPages) return;
+        PDFView.instances[uid].page++;
+        PDFView.render(uid);
     }
 };
 
